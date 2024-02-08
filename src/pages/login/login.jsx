@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-import groupDonationImg from "../../assets/group-don.jpg";
+
 import manDonating from "../../assets/man-donating.jpg";
 import "./login.css";
 
@@ -79,6 +79,7 @@ const Login = () => {
       <>
         <ToastContainer position="top-center">
           <Toast
+            style={{ color: "white" }}
             className="toast-msg"
             bg={toastColor}
             onClose={() => setShowAlert(false)}
