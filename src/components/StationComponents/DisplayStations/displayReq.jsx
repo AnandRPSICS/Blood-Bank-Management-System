@@ -1,61 +1,53 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { InputGroup, Form } from "react-bootstrap";
 import { FaSearchLocation } from "react-icons/fa";
 import { Toast, ToastContainer } from "react-bootstrap";
 import RequestTable from "../../StationTable/requestTable.jsx";
 import MyModel from "./MyModel.jsx";
+import { UserContext } from "../../../context/userContext.jsx";
 import "./displayStations.css";
 const DisplayReq = () => {
+  const { getAllReq, getActiveUser, allReqArr, activeUser } =
+    useContext(UserContext);
+
   const [allRequests, setAllRequests] = useState([]);
+  const [sameBloodGroupReqs, setSameBloodGroupReqs] = useState([]);
   const [searchStation, setSearchStation] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [toastColor, setToastColor] = useState("dark");
   const [showModel, setShowModel] = useState(false);
-  const [role, setRole] = useState("donor");
-  const getAllDonors = () => {
-    console.log("get all request  function");
-    setAllRequests([
-      {
-        name: "santosh",
-        age: 20,
-        bloodGroup: "A+",
-        date: "24-02-2024",
-        units: 5,
-        phoneNumber: "1234567890",
-      },
-      {
-        name: "Akhil",
-        age: 24,
-        bloodGroup: "B+",
-        date: "24-02-2024",
-        units: 5,
-        phoneNumber: "1234567890",
-      },
-    ]);
-  };
+  const [role, setRole] = useState("");
 
   useEffect(() => {
-    getAllDonors();
+    const data = getAllReq();
+    // call getActiveUser for store data to context api from LS.
+    getActiveUser();
+    setAllRequests(data);
+    if (activeUser) {
+      filterReqByActiveUserBloodGroup();
+    } else {
+      console.log("Login Again.");
+    }
   }, []);
+
+  const filterReqByActiveUserBloodGroup = () => {
+    const sameBloodGroupReqs = allReqArr.filter(
+      (req) => req.bloodGroup === activeUser.bloodGroup
+    );
+    console.log("same", sameBloodGroupReqs);
+    setSameBloodGroupReqs(sameBloodGroupReqs);
+  };
+  const getAllDonors = () => {
+    const data = getAllReq();
+    setAllRequests(data);
+  };
 
   const deleteDonor = () => {
     console.log("delete donor");
   };
   const bookSlot = () => {
     console.log("inside book slot");
-  };
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      getStationsByLocation();
-    }
-  };
-
-  const getStationsByLocation = () => {
-    if (searchStation === "") {
-      getAllDonors();
-      return;
-    }
   };
 
   const requestBlood = () => {
@@ -75,50 +67,17 @@ const DisplayReq = () => {
           <div className="table-heading-container">
             <h1>Requests</h1>
           </div>
-          <div className="table-top-buttons">
+          <div className="table-top-buttons mb-4">
             <div onClick={getAllDonors}>All Requests</div>
           </div>
 
-          <div className="table-search-container">
-            <InputGroup className="mb-3">
-              <InputGroup.Text
-                id="basic-addon1"
-                onClick={getStationsByLocation}
-                className="searchIcon"
-              >
-                <FaSearchLocation />
-              </InputGroup.Text>
-              {/* search donors by name  */}
-              <Form.Control
-                placeholder="Search Requests"
-                aria-describedby="basic-addon1"
-                value={searchStation}
-                onChange={(e) => setSearchStation(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-            </InputGroup>
-            <div className="mb-3">
-              {/* // make this Filter by blood group  */}
-              <Form.Select onChange={filterByBloodGroup}>
-                <option value="">Filter by Blood Group</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-              </Form.Select>
-            </div>
-          </div>
           {allRequests.length === 0 ? (
             <>
               <div className="no-stations"> Sorry Requests Not Found.</div>
             </>
           ) : (
             <RequestTable
-              allRequests={allRequests}
+              allRequests={sameBloodGroupReqs}
               deleteStation={deleteDonor}
               bookSlot={bookSlot}
               role={role}

@@ -70,7 +70,7 @@ const NavbarComponent = () => {
                 Donors <BiDonateBlood className="charging-icon" />
               </div>
               <div className="find-stations fw-bold" onClick={redirectRequests}>
-                Requests <MdBloodtype className="charging-icon" />
+                View Requests <MdBloodtype className="charging-icon" />
               </div>
 
               {/* show this only when a user logged in  */}

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import { FormSelect } from "react-bootstrap";
+import { UserContext } from "../../../context/userContext";
 
 // donation request model for get blood
 const MyModel = ({
@@ -15,24 +16,61 @@ const MyModel = ({
   setToastColor,
 }) => {
   const [patientName, setPatientName] = useState("");
-  const [date, setDate] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
-  const [patientAge, setPatientAge] = useState("");
   const [requiredUnits, setRequiredUnits] = useState("");
+  const [date, setDate] = useState("");
+
+  const {addNewReq} = useContext(UserContext)
 
   const handleClose = () => setShowModel(false);
   const handleReset = () => {
-    console.log("inside handle reset myModel.jsx");
     setPatientName("");
     setDate("");
     setBloodGroup("");
-    setPatientAge("");
+    setPhoneNumber("");
     setRequiredUnits("");
     handleClose();
   };
 
   const handleSubmit = () => {
     console.log("handle submit mymodel.jsx");
+    if (!patientName || !phoneNumber || !bloodGroup || !requiredUnits) {
+      console.log(
+        "patient Name",
+        patientName,
+        "phone number",
+        phoneNumber,
+        "blood group",
+        bloodGroup,
+        "required units",
+        requiredUnits
+      );
+      setAlertMsg("All fields are mandatory");
+      setShowAlert(true);
+      setToastColor("danger");
+      return;
+    }
+    // make this blood request
+    sendData();
+  };
+
+  const sendData = () => {
+    console.log("handle add station");
+
+    const reqObj = {
+      name: patientName,
+      phoneNumber,
+      bloodGroup,
+      requiredUnits,
+      date,
+      isReqAccepted: false,
+      reqId: Date.now(),
+    };
+
+    addNewReq(reqObj);
+    console.log("req obj", reqObj);
+    // make this blood request
   };
   return (
     <>
@@ -54,9 +92,9 @@ const MyModel = ({
             <Form.Group className="mb-3">
               <Form.Control
                 type="number"
-                value={patientAge}
-                onChange={(e) => setPatientAge(e.target.value)}
-                placeholder="Patient Age"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Phone Number"
                 rows={3}
               />
             </Form.Group>

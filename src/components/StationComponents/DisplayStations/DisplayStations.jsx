@@ -8,7 +8,7 @@ import { UserContext } from "../../../context/userContext.jsx";
 import "./displayStations.css";
 const Displaystations = () => {
   const { getAllUsers } = useContext(UserContext);
-  // this use for search & filter purpose
+  // alwaysDonoors use for search & filter purpose
   const [alwaysDonors, setAlwaysDonors] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [allDonors, setallDonors] = useState([]);
@@ -21,7 +21,6 @@ const Displaystations = () => {
 
   useEffect(() => {
     const data = getAllUsers();
-    console.log("all users", data);
     setAllUsers(data);
   }, []);
 
@@ -139,9 +138,8 @@ const Displaystations = () => {
               role={role}
             />
           )}
-          <ToastContainer position="top-center">
+          <ToastContainer position="top-center" className="toast-msg">
             <Toast
-              className="toast-msg"
               bg={toastColor}
               onClose={() => setShowAlert(false)}
               show={showAlert}

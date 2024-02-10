@@ -6,6 +6,7 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const [activeUser, setActiveUser] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
+  const [allReqArr, setAllReqArr] = useState([]);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const login = (email, password) => {
@@ -71,18 +72,41 @@ const UserProvider = ({ children }) => {
     return !isMailExist;
   };
 
+  // requests
+
+
+  const getAllReq = () => {
+    const allReq = localStorage.getItem("bbms-all-req") || null;
+    if (allReq) {
+      const data = JSON.parse(allReq);
+      setAllReqArr(data);
+      return data;
+    }
+    return [];
+  };
+
+  const addNewReq = (newReq) => {
+    const existingReq = getAllReq();
+    const newArr = [...existingReq, newReq];
+    localStorage.setItem("bbms-all-req", JSON.stringify(newArr));
+    setAllReqArr([...allReqArr, newReq]);
+  };
+
   return (
     <UserContext.Provider
       value={{
         activeUser,
         allUsers,
         isUserLoggedIn,
+        allReqArr,
         newRegistration,
         login,
         logout,
         getAllUsers,
         getActiveUser,
         isMailUnique,
+        getAllReq,
+        addNewReq
       }}
     >
       {children}

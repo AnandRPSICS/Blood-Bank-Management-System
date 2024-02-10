@@ -11,8 +11,9 @@ const RequestTable = ({ allRequests, deleteStation, bookSlot, role }) => {
           <tr>
             <th>No.</th>
             <th>Patient Name</th>
-            <th>Patient Age</th>
+            <th>Contact Number</th>
             <th>Required Blood Group</th>
+            <th>Required Units</th>
             <th>Phone Number</th>
             <th>Date </th>
             <th>Accept Request</th>
@@ -25,14 +26,16 @@ const RequestTable = ({ allRequests, deleteStation, bookSlot, role }) => {
         </thead>
         <tbody>
           {allRequests?.map((elem, index) => {
+            console.log("el", elem);
             return (
-              <tr key={elem._id}>
+              <tr key={elem?.reqId}>
                 <td>{index + 1}</td>
-                <td>{elem.name}</td>
-                <td>{elem.age}</td>
-                <td>{elem.bloodGroup}</td>
-                <td>{elem.phoneNumber}</td>
-                <td>{elem.date}</td>
+                <td>{elem?.name}</td>
+                <td>{elem?.phoneNumber}</td>
+                <td>{elem?.bloodGroup}</td>
+                <td>{elem?.requiredUnits}</td>
+                <td>{elem?.phoneNumber}</td>
+                <td>{elem?.date}</td>
                 <td>
                   <button type="btn" className="btn btn-success">
                     Accept
