@@ -12,13 +12,13 @@ const YellowBanner = () => {
     <div className="yellow-banner banner-animation">
       <div>100+ New Monthly Donors</div>
       <BiDonateBlood />
-      <div>Save 1000+ lifes</div>
+      <div>1000+ Active Users </div>
       {!isTab && (
         <>
           <MdBloodtype />
-          <div>100+ New Monthly Donors</div>
+          <div>Donate Blood</div>
           <BiDonateBlood />
-          <div>Save 1000+ lifes</div>
+          <div>Save lifes</div>
           <MdBloodtype />
         </>
       )}

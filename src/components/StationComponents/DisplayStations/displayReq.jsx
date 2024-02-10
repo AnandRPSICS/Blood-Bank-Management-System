@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { InputGroup, Form } from "react-bootstrap";
 import { FaSearchLocation } from "react-icons/fa";
 import { Toast, ToastContainer } from "react-bootstrap";
-import StationTable from "../../StationTable/stationTable.jsx";
+import RequestTable from "../../StationTable/requestTable.jsx";
 import MyModel from "./MyModel.jsx";
 import "./displayStations.css";
-const Displaystations = () => {
-  const [allDonors, setallDonors] = useState([]);
+const DisplayReq = () => {
+  const [allRequests, setAllRequests] = useState([]);
   const [searchStation, setSearchStation] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
@@ -14,19 +14,23 @@ const Displaystations = () => {
   const [showModel, setShowModel] = useState(false);
   const [role, setRole] = useState("donor");
   const getAllDonors = () => {
-    console.log("get all stations function");
-    setallDonors([
+    console.log("get all request  function");
+    setAllRequests([
       {
         name: "santosh",
+        age: 20,
         bloodGroup: "A+",
+        date: "24-02-2024",
+        units: 5,
         phoneNumber: "1234567890",
-        email: "UOYQF@example.com",
       },
       {
-        name: "xyz",
+        name: "Akhil",
+        age: 24,
         bloodGroup: "B+",
+        date: "24-02-2024",
+        units: 5,
         phoneNumber: "1234567890",
-        email: "UOYQF@example.com",
       },
     ]);
   };
@@ -69,14 +73,10 @@ const Displaystations = () => {
       <div className="display-stations">
         <div className="station-table-container">
           <div className="table-heading-container">
-            <h1>List of Donors</h1>
-            {/* change this to request blood  */}
-            {role !== "user" && (
-              <button onClick={requestBlood}>Request Blood </button>
-            )}
+            <h1>Requests</h1>
           </div>
           <div className="table-top-buttons">
-            <div onClick={getAllDonors}>All Donors</div>
+            <div onClick={getAllDonors}>All Requests</div>
           </div>
 
           <div className="table-search-container">
@@ -90,8 +90,7 @@ const Displaystations = () => {
               </InputGroup.Text>
               {/* search donors by name  */}
               <Form.Control
-                placeholder="Search Donors"
-                aria-label="Search Donors"
+                placeholder="Search Requests"
                 aria-describedby="basic-addon1"
                 value={searchStation}
                 onChange={(e) => setSearchStation(e.target.value)}
@@ -113,13 +112,13 @@ const Displaystations = () => {
               </Form.Select>
             </div>
           </div>
-          {allDonors.length === 0 ? (
+          {allRequests.length === 0 ? (
             <>
-              <div className="no-stations"> Sorry Donors Not Found.</div>
+              <div className="no-stations"> Sorry Requests Not Found.</div>
             </>
           ) : (
-            <StationTable
-              allDonors={allDonors}
+            <RequestTable
+              allRequests={allRequests}
               deleteStation={deleteDonor}
               bookSlot={bookSlot}
               role={role}
@@ -153,4 +152,4 @@ const Displaystations = () => {
     </>
   );
 };
-export default Displaystations;
+export default DisplayReq;

@@ -20,7 +20,7 @@
 }
 
 .nav-right {
-  width: 30%;
+  /* width: 40%; */
   justify-content: space-around;
   align-items: center;
   /* background-color: red; */
@@ -33,6 +33,7 @@
 .find-stations {
   font-weight: 600;
   cursor: pointer;
+  margin-right: 20px;
 }
 
 .nav-link {
@@ -47,18 +48,15 @@
   transform: translateY(-2px);
 }
 
-.signin-btn,
 .login-btn-2 {
   border-radius: 30px;
   height: 28px;
   font-size: 14px;
-  padding: 0;
-  width: 73px;
-}
-
-.login-btn-2 {
-  background-color: black;
+  width: 100px;
+  background-color: rgb(220, 37, 37) !important;
   color: white;
+  padding: 0 !important;
+  border: none;
 }
 .login-btn-2:hover {
   border: 1px solid black;

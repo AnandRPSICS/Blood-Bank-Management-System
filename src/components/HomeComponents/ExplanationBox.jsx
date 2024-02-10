@@ -1,11 +1,10 @@
 import { Container } from "react-bootstrap";
-import { FaSearchLocation } from "react-icons/fa";
-import { FaChargingStation } from "react-icons/fa";
 import PropTypes from "prop-types";
-import "./styles/explanationBox.css";
 import { BiDonateBlood } from "react-icons/bi";
 import { MdBloodtype } from "react-icons/md";
 import { FaHandshake } from "react-icons/fa";
+import "./styles/explanationBox.css";
+
 const ExplanationBox = ({ boxNo }) => {
   const iconStyles = {
     fontSize: "40px",

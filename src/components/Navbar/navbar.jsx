@@ -1,33 +1,19 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 import Stack from "react-bootstrap/Stack";
-import { useState } from "react";
-import { FaChargingStation } from "react-icons/fa6";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
-// import { LoginContext } from "../../Context/LoginContext";
-import { useContext } from "react";
+import { BiDonateBlood } from "react-icons/bi";
+import { MdBloodtype } from "react-icons/md";
 import { Toast, ToastContainer } from "react-bootstrap";
-import { useMediaQuery } from "react-responsive";
-import { CgProfile } from "react-icons/cg";
-import { FcBusinessman } from "react-icons/fc";
 import "./navbar.css";
 
 const NavbarComponent = () => {
-  // const { isUserLogin, setIsUserLogin } = useContext(LoginContext);
   const [showAlert, setShowAlert] = useState(false);
-  const [isUserLogin, setIsUserLogin] = useState(true);
+  const [isUserLogin, setIsUserLogin] = useState(false);
   const navigate = useNavigate();
-  const isLaptop = useMediaQuery({
-    query: "(min-width: 1224px)",
-  });
-  const isTab = useMediaQuery({
-    query: "(min-width: 768px)",
-  });
-  const isMobile = useMediaQuery({
-    query: "(max-width: 570px)",
-  });
 
   const redirectSignup = () => {
     navigate("/signup");
@@ -40,23 +26,18 @@ const NavbarComponent = () => {
     navigate("/");
   };
 
-  const redirectProfile = () => {
-    navigate("/profile");
-  };
-
   const userLogout = () => {
-    localStorage.removeItem("user-data");
-    localStorage.removeItem("Login");
-    // setIsUserLogin(false);
+    // here remove active user data from LS
     navigate("/login");
   };
 
-  const redirectStation = () => {
-    if (isUserLogin) {
-      navigate("/stations");
-    } else {
-      setShowAlert(true);
-    }
+  // redirect donors only user log in.
+  const redirectDonors = () => {
+    navigate("/donors");
+  };
+
+  const redirectRequests = () => {
+    navigate("/requests");
   };
 
   return (
@@ -72,82 +53,40 @@ const NavbarComponent = () => {
           </Navbar.Brand>
         </Nav>
 
-        <Nav
-          className={`nav-right ${
-            isMobile && isUserLogin && "nav-right-login"
-          }`}
-        >
-          {!isMobile ? (
+        <Nav className={`nav-right ${isUserLogin && "nav-right-login"}`}>
+          <>
             <>
-              <div className="find-stations" onClick={redirectStation}>
-                Find stations <FaChargingStation className="charging-icon" />
+              <div className="find-stations fw-bold" onClick={redirectDonors}>
+                Donors <BiDonateBlood className="charging-icon" />
+              </div>
+              <div className="find-stations fw-bold" onClick={redirectRequests}>
+                Requests <MdBloodtype className="charging-icon" />
               </div>
 
-              {isUserLogin ? (
-                <>
-                  <Nav.Link>
-                    <div onClick={redirectProfile}>
-                      {" "}
-                      Profile
-                      {/* <FcBusinessman/> */}
-                    </div>
-                  </Nav.Link>
+              {/* show this only when a user logged in  */}
+              {/* <Nav.Link>
+                <Button onClick={userLogout} className="login-btn-2">
+                  {" "}
+                  Log out
+                </Button>
+              </Nav.Link> */}
+            </>
 
-                  <Nav.Link>
-                    <Button onClick={userLogout} className="login-btn-2">
-                      {" "}
-                      Log out
-                    </Button>
-                  </Nav.Link>
-                </>
-              ) : (
-                <Stack direction="horizontal" className="nav-btns">
-                  <Nav.Link>
-                    <Button
-                      onClick={redirectSignup}
-                      className="signin-btn"
-                      variant="outline-dark"
-                    >
-                      {" "}
-                      Sign up
-                    </Button>
-                  </Nav.Link>
-                  <Nav.Link>
-                    <Button onClick={redirectLogin} className="login-btn-2">
-                      {" "}
-                      Log in
-                    </Button>
-                  </Nav.Link>
-                </Stack>
-              )}
-            </>
-          ) : (
-            <>
-              {isUserLogin ? (
-                <>
-                  <div className="find-stations" onClick={redirectStation}>
-                    Find stations{" "}
-                    <FaChargingStation className="charging-icon" />
-                  </div>
-                  <Nav.Link>
-                    <Button onClick={userLogout} className="login-btn-2">
-                      {" "}
-                      Log out
-                    </Button>
-                  </Nav.Link>
-                </>
-              ) : (
-                <Stack direction="horizontal" className="nav-btns">
-                  <Nav.Link>
-                    <Button onClick={redirectLogin} className="login-btn-2">
-                      {" "}
-                      Log in
-                    </Button>
-                  </Nav.Link>
-                </Stack>
-              )}
-            </>
-          )}
+            <Stack direction="horizontal" className="nav-btns">
+              <Nav.Link>
+                <Button onClick={redirectSignup} className="login-btn-2">
+                  {" "}
+                  Sign Up
+                </Button>
+              </Nav.Link>
+              <Nav.Link>
+                <Button onClick={redirectLogin} className="login-btn-2">
+                  {" "}
+                  Log In
+                </Button>
+              </Nav.Link>
+            </Stack>
+          </>
         </Nav>
       </Navbar>
       <ToastContainer position="top-center">
