@@ -14,16 +14,20 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import groupDonationImg from "../../assets/group-don.jpg";
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext.jsx";
 import "./signup.css";
 
 const Signup = () => {
+  const { activeUser, allUsers, getAllUsers, newRegistration, isMailUnique } =
+    useContext(UserContext);
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("donor");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [group, setGroup] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("A+");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [validated, setValidated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -33,6 +37,10 @@ const Signup = () => {
   const tabSize = useMediaQuery({
     query: "(max-width: 768px)",
   });
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   const handleChanges = (e) => {
     const value = e.target.value;
@@ -49,8 +57,8 @@ const Signup = () => {
       case "phoneNumber":
         setPhoneNumber(value);
         break;
-      case "group":
-        setGroup(value);
+      case "bloodGroup":
+        setBloodGroup(value);
         break;
       case "password":
         setPassword(value);
@@ -75,27 +83,42 @@ const Signup = () => {
       setAlertMsg("Password must be at least 6 characters long.");
       return;
     }
-
-    if (
-      form.checkValidity() === true &&
-      name &&
-      role &&
-      email &&
-      phoneNumber &&
-      password
-    ) {
-      sendToServer();
+    if (name && role && email && bloodGroup && phoneNumber && password) {
+      if (isMailUnique(email)) {
+        sendToServer();
+      } else {
+        setShowAlert(true);
+        setAlertMsg("Email already exists");
+        setToastColor("danger");
+        return;
+      }
+    } else {
+      setShowAlert(true);
+      setAlertMsg("Please fill all the fields");
+      setToastColor("danger");
+      return;
     }
   };
 
   const sendToServer = () => {
     const userData = {
+      userId: Date.now(),
       name,
       role,
       email,
       phoneNumber,
+      bloodGroup,
       password,
+      isAnyReqAccepted: false,
     };
+    newRegistration(userData);
+    setShowAlert(true);
+    setAlertMsg("Registration successfull");
+    setToastColor("success");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500);
+
     console.log("userData", userData);
   };
 
@@ -151,7 +174,7 @@ const Signup = () => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-2" controlId="formBasicSelect">
+              <Form.Group className="mb-2">
                 <Form.Select
                   size="sm"
                   onChange={handleChanges}
@@ -163,12 +186,12 @@ const Signup = () => {
                 </Form.Select>
               </Form.Group>
 
-              <Form.Group className="mb-2" controlId="formBasicSelect">
+              <Form.Group className="mb-2">
                 <Form.Select
                   size="sm"
                   onChange={handleChanges}
-                  value={group}
-                  name="group"
+                  value={bloodGroup}
+                  name="bloodGroup"
                   required
                 >
                   <option value=""> Select Blood Group</option>
@@ -268,7 +291,7 @@ const Signup = () => {
                   <div>User</div>
                   <div>Privacy Policy</div>
                   <div>Send feedback</div>
-                  <div className="ms-auto credit">EV Locator © 2023</div>
+                  <div className="ms-auto credit">Blood Bank © 2024</div>
                 </Stack>
               </div>
             )}

@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { InputGroup, Form } from "react-bootstrap";
 import { FaSearchLocation } from "react-icons/fa";
 import { Toast, ToastContainer } from "react-bootstrap";
 import StationTable from "../../StationTable/stationTable.jsx";
 import MyModel from "./MyModel.jsx";
+import { UserContext } from "../../../context/userContext.jsx";
 import "./displayStations.css";
 const Displaystations = () => {
+  const { getAllUsers } = useContext(UserContext);
+  const [allUsers, setAllUsers] = useState([]);
   const [allDonors, setallDonors] = useState([]);
   const [searchStation, setSearchStation] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -13,27 +16,22 @@ const Displaystations = () => {
   const [toastColor, setToastColor] = useState("dark");
   const [showModel, setShowModel] = useState(false);
   const [role, setRole] = useState("donor");
-  const getAllDonors = () => {
-    console.log("get all stations function");
-    setallDonors([
-      {
-        name: "santosh",
-        bloodGroup: "A+",
-        phoneNumber: "1234567890",
-        email: "UOYQF@example.com",
-      },
-      {
-        name: "xyz",
-        bloodGroup: "B+",
-        phoneNumber: "1234567890",
-        email: "UOYQF@example.com",
-      },
-    ]);
-  };
 
   useEffect(() => {
-    getAllDonors();
+    const data = getAllUsers();
+    console.log("all users", data);
+    setAllUsers(data);
   }, []);
+
+  useEffect(() => {
+    // get all donors data
+    getAllDonors();
+  }, [allUsers]);
+
+  const getAllDonors = () => {
+    const allDonors = allUsers?.filter((user) => user.role === "donor") || [];
+    setallDonors(allDonors);
+  };
 
   const deleteDonor = () => {
     console.log("delete donor");

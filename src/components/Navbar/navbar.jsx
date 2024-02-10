@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -8,13 +8,19 @@ import Button from "react-bootstrap/Button";
 import { BiDonateBlood } from "react-icons/bi";
 import { MdBloodtype } from "react-icons/md";
 import { Toast, ToastContainer } from "react-bootstrap";
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
 import "./navbar.css";
 
 const NavbarComponent = () => {
+  const { activeUser, getActiveUser, isUserLoggedIn, logout } =
+    useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
-  const [isUserLogin, setIsUserLogin] = useState(false);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    // get active user data to context from LS
+    getActiveUser();
+  }, []);
   const redirectSignup = () => {
     navigate("/signup");
   };
@@ -26,9 +32,13 @@ const NavbarComponent = () => {
     navigate("/");
   };
 
-  const userLogout = () => {
+  const logoutUser = () => {
     // here remove active user data from LS
-    navigate("/login");
+    logout();
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 0);
   };
 
   // redirect donors only user log in.
@@ -53,7 +63,7 @@ const NavbarComponent = () => {
           </Navbar.Brand>
         </Nav>
 
-        <Nav className={`nav-right ${isUserLogin && "nav-right-login"}`}>
+        <Nav className={`nav-right ${isUserLoggedIn && "nav-right-login"}`}>
           <>
             <>
               <div className="find-stations fw-bold" onClick={redirectDonors}>
@@ -71,21 +81,31 @@ const NavbarComponent = () => {
                 </Button>
               </Nav.Link> */}
             </>
-
-            <Stack direction="horizontal" className="nav-btns">
-              <Nav.Link>
-                <Button onClick={redirectSignup} className="login-btn-2">
-                  {" "}
-                  Sign Up
-                </Button>
-              </Nav.Link>
-              <Nav.Link>
-                <Button onClick={redirectLogin} className="login-btn-2">
-                  {" "}
-                  Log In
-                </Button>
-              </Nav.Link>
-            </Stack>
+            {isUserLoggedIn ? (
+              <Stack direction="horizontal" className="nav-btns">
+                <Nav.Link>
+                  <Button onClick={logoutUser} className="login-btn-2">
+                    {" "}
+                    Log Out
+                  </Button>
+                </Nav.Link>
+              </Stack>
+            ) : (
+              <Stack direction="horizontal" className="nav-btns">
+                <Nav.Link>
+                  <Button onClick={redirectSignup} className="login-btn-2">
+                    {" "}
+                    Sign Up
+                  </Button>
+                </Nav.Link>
+                <Nav.Link>
+                  <Button onClick={redirectLogin} className="login-btn-2">
+                    {" "}
+                    Log In
+                  </Button>
+                </Nav.Link>
+              </Stack>
+            )}
           </>
         </Nav>
       </Navbar>

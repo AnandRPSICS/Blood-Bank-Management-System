@@ -11,11 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-
 import manDonating from "../../assets/man-donating.jpg";
+import { UserContext } from "../../context/userContext.jsx";
 import "./login.css";
 
 const Login = () => {
+  const { activeUser, allUsers, getAllUsers, newRegistration, login, logout } =
+    useContext(UserContext);
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,12 +27,15 @@ const Login = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [toastColor, setToastColor] = useState("dark");
-  //   const { setIsUserLogin, setUserInfo } = useContext(LoginContext);
-  const [isAdminActive, setIsAdminActive] = useState(false);
 
   const tabSize = useMediaQuery({
     query: "(max-width: 768px)",
   });
+
+  useEffect(() => {
+    // this function will be store data to context from local storage
+    getAllUsers();
+  }, []);
 
   const handleChanges = (e) => {
     const value = e.target.value;
@@ -57,9 +63,14 @@ const Login = () => {
       setAlertMsg("Password must be at least 6 characters long.");
       return;
     }
-    if (form.checkValidity() === true && email && password) {
-      sendToServer();
+    if (!email || !password) {
+      setShowAlert(true);
+      setAlertMsg("Please fill all the fields.");
+      setToastColor("danger");
+      return;
     }
+
+    sendToServer(email, password);
   };
 
   const navigateSignup = () => {
@@ -67,11 +78,19 @@ const Login = () => {
   };
 
   const sendToServer = () => {
-    const userData = {
-      email,
-      password,
-    };
-    console.log("user data", userData);
+    const isLoginSuccess = login(email, password);
+    if (isLoginSuccess) {
+      setShowAlert(true);
+      setAlertMsg("Login Success");
+      setToastColor("success");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } else {
+      setShowAlert(true);
+      setAlertMsg("Email or password is wrong");
+      setToastColor("danger");
+    }
   };
 
   return (

@@ -7,20 +7,23 @@ import Requests from "./pages/requests/requests";
 import AdminLogin from "./pages/Admin/AdminLogin/AdminLogin";
 // import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard/adminDashboard";
+import { UserProvider } from "./context/userContext";
 import "./App.css";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signin />} />
-        <Route path="/donors" element={<DonorsList />} />
-        <Route path="/requests" element={<Requests />} />
-        {/* admin pages  */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signin />} />
+          <Route path="/donors" element={<DonorsList />} />
+          <Route path="/requests" element={<Requests />} />
+          {/* admin pages  */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }

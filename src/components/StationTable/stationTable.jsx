@@ -23,13 +23,14 @@ const StationTable = ({ allDonors, deleteStation, bookSlot, role }) => {
         </thead>
         <tbody>
           {allDonors?.map((elem, index) => {
+            console.log("elem", elem)
             return (
-              <tr key={elem._id}>
+              <tr key={elem?.userId}>
                 <td>{index + 1}</td>
-                <td>{elem.name}</td>
-                <td>{elem.bloodGroup}</td>
-                <td>{elem.phoneNumber}</td>
-                <td>{elem.email}</td>
+                <td>{elem?.name}</td>
+                <td>{elem?.bloodGroup}</td>
+                <td>{elem?.phoneNumber}</td>
+                <td>{elem?.email}</td>
               </tr>
             );
           })}
