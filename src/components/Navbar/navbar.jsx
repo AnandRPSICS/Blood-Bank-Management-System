@@ -19,12 +19,12 @@ const NavbarComponent = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [isUserLogin, setIsUserLogin] = useState(true);
   const navigate = useNavigate();
-  // const isLaptop = useMediaQuery({
-  //   query: "(min-width: 1224px)",
-  // });
-  // const isTab = useMediaQuery({
-  //   query: "(min-width: 768px)",
-  // });
+  const isLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isTab = useMediaQuery({
+    query: "(min-width: 768px)",
+  });
   const isMobile = useMediaQuery({
     query: "(max-width: 570px)",
   });

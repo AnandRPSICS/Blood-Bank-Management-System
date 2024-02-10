@@ -1,77 +1,45 @@
+import { useState, useEffect } from "react";
 import { InputGroup, Form } from "react-bootstrap";
 import { FaSearchLocation } from "react-icons/fa";
 import { Toast, ToastContainer } from "react-bootstrap";
-import StationTable from "../../StationTable/StationTable";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import StationTable from "../../StationTable/stationTable.jsx";
 import MyModel from "./MyModel.jsx";
 import "./displayStations.css";
 const Displaystations = () => {
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const [allStations, setAllStations] = useState([]);
+  const [allDonors, setallDonors] = useState([]);
   const [searchStation, setSearchStation] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [toastColor, setToastColor] = useState("dark");
-  const [showModel, setShowModel] = useState(false);
-  const [role, setRole] = useState("user");
-  const getAllStations = () => {
-    const userData = JSON.parse(localStorage.getItem("user-data")) || null;
-
-    setSearchStation("");
-    axios.get(`${BASE_URL}/ev/all-stations`).then((res) => {
-      let visibleStations = res.data.data;
-      if (userData.role === "ev-station") {
-        visibleStations = res.data.data.filter((elem) => {
-          return elem.ownerId === userData._id;
-        });
-      }
-      const reversedData = visibleStations.reverse();
-      setAllStations(reversedData);
-    }).catch((err) => {
-      console.log("error on get all stations", err);
-    })
+  const [showModel, setShowModel] = useState(true);
+  const [role, setRole] = useState("donor");
+  const getAllDonors = () => {
+    console.log("get all stations function");
+    setallDonors([
+      {
+        name: "santosh",
+        bloodGroup: "A+",
+        phoneNumber: "1234567890",
+        email: "UOYQF@example.com",
+      },
+      {
+        name: "xyz",
+        bloodGroup: "B+",
+        phoneNumber: "1234567890",
+        email: "UOYQF@example.com",
+      },
+    ]);
   };
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user-data")) || null;
-    console.log("udd", userData);
-    if (userData) {
-      setRole(userData.role);
-      getAllStations();
-    } else {
-      console.log("Login first");
-    }
+    getAllDonors();
   }, []);
 
-  const bookSlot = (id) => {
-    if (role !== "user") {
-      setShowAlert(true);
-      setToastColor("warning");
-      setAlertMsg("You are not allowed to book slots");
-      return;
-    }
-    try {
-      axios
-        .patch(`${BASE_URL}/ev/book-slot/${id}`)
-        .then((res) => {
-          if (res.status === 200) {
-            getAllStations();
-            setShowAlert(true);
-            setToastColor("success");
-            setAlertMsg(res.data.message);
-          } else {
-            console.log("Check book slot functin");
-          }
-        })
-        .catch((err) => {
-          setShowAlert(true);
-          setToastColor("danger");
-          setAlertMsg(err.response.data.message);
-        });
-    } catch (error) {
-      console.log("Error on Book-slot", error);
-    }
+  const deleteDonor = () => {
+    console.log("delete donor");
+  };
+  const bookSlot = () => {
+    console.log("inside book slot");
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -81,55 +49,19 @@ const Displaystations = () => {
 
   const getStationsByLocation = () => {
     if (searchStation === "") {
-      getAllStations();
+      getAllDonors();
       return;
     }
-    try {
-      axios.get(`${BASE_URL}/ev/location/${searchStation}`).then((res) => {
-        console.log(res.data.data.length, "res");
-        if (res.data.data.length === 0) {
-          setAllStations([]);
-        } else {
-          console.log("data: ", res.data);
-          setAllStations(res.data.data);
-        }
-      });
-    } catch (error) {
-      console.log("Error on get stations by location", error);
-    }
   };
 
-  const deleteStation = (_id) => {
-    axios
-      .delete(`${BASE_URL}/ev/delete/${_id}`)
-      .then((res) => {
-        const stationName = res.data.data.stationName;
-        getAllStations();
-        setShowAlert(true);
-        setToastColor("danger");
-        setAlertMsg(stationName + " Station Deleted Successfully.");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleAddStation = () => {
+  const requestBlood = () => {
+    console.log("handle add station");
+    // make this blood request
     setShowModel(true);
   };
 
-  const sortByPrice = (e) => {
-    if (e.target.value === "high") {
-      const sortedData = [...allStations].sort((a, b) => {
-        return b.pricePerHour - a.pricePerHour;
-      });
-      setAllStations(sortedData);
-    } else if (e.target.value === "low") {
-      const sortedData = [...allStations].sort((a, b) => {
-        return a.pricePerHour - b.pricePerHour;
-      });
-      setAllStations(sortedData);
-    }
+  const filterByBloodGroup = () => {
+    console.log("filter by blood group");
   };
 
   return (
@@ -137,13 +69,14 @@ const Displaystations = () => {
       <div className="display-stations">
         <div className="station-table-container">
           <div className="table-heading-container">
-            <h1>List of Charging Stations</h1>
+            <h1>List of Donors</h1>
+            {/* change this to request blood  */}
             {role !== "user" && (
-              <button onClick={handleAddStation}>Add New Station</button>
+              <button onClick={requestBlood}>Request Blood </button>
             )}
           </div>
           <div className="table-top-buttons">
-            <div onClick={getAllStations}>All Stations</div>
+            <div onClick={getAllDonors}>All Donors</div>
           </div>
 
           <div className="table-search-container">
@@ -155,9 +88,10 @@ const Displaystations = () => {
               >
                 <FaSearchLocation />
               </InputGroup.Text>
+              {/* search donors by name  */}
               <Form.Control
-                placeholder="Search Stations"
-                aria-label="Search Stations"
+                placeholder="Search Donors"
+                aria-label="Search Donors"
                 aria-describedby="basic-addon1"
                 value={searchStation}
                 onChange={(e) => setSearchStation(e.target.value)}
@@ -165,24 +99,28 @@ const Displaystations = () => {
               />
             </InputGroup>
             <div className="mb-3">
-              <Form.Select onChange={sortByPrice}>
-                <option value="">Sort by Price</option>
-                <option value="low">Low to High</option>
-                <option value="high">High to Low</option>
+              {/* // make this Filter by blood group  */}
+              <Form.Select onChange={filterByBloodGroup}>
+                <option value="">Filter by Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
               </Form.Select>
             </div>
           </div>
-          {allStations.length === 0 ? (
+          {allDonors.length === 0 ? (
             <>
-              <div className="no-stations">
-                {" "}
-                Sorry EV Stations are Not Found.
-              </div>
+              <div className="no-stations"> Sorry Donors Not Found.</div>
             </>
           ) : (
             <StationTable
-              allStations={allStations}
-              deleteStation={deleteStation}
+              allDonors={allDonors}
+              deleteStation={deleteDonor}
               bookSlot={bookSlot}
               role={role}
             />
@@ -203,10 +141,11 @@ const Displaystations = () => {
         </div>
       </div>
 
+      {/* make this model to donation request  */}
       <MyModel
         showModel={showModel}
         setShowModel={setShowModel}
-        getAllStations={getAllStations}
+        getAllDonors={getAllDonors}
         setShowAlert={setShowAlert}
         setAlertMsg={setAlertMsg}
         setToastColor={setToastColor}

@@ -3,137 +3,100 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
-import axios from "axios";
+import { FormSelect } from "react-bootstrap";
 
+// donation request model for get blood
 const MyModel = ({
   showModel,
   setShowModel,
-  getAllStations,
+  getAllDonors,
   setAlertMsg,
   setShowAlert,
   setToastColor,
 }) => {
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const [stationName, setStationName] = useState("");
-  const [location, setLocation] = useState("");
-  const [totalPorts, setTotalPorts] = useState("");
-  const [availablePorts, setAvailablePorts] = useState("");
-  const [pricePerHour, setPricePerHour] = useState("");
+  const [patientName, setPatientName] = useState("");
+  const [date, setDate] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
+  const [patientAge, setPatientAge] = useState("");
+  const [requiredUnits, setRequiredUnits] = useState("");
 
   const handleClose = () => setShowModel(false);
   const handleReset = () => {
-    setStationName("");
-    setLocation("");
-    setTotalPorts("");
-    setAvailablePorts("");
-    setPricePerHour("");
+    console.log("inside handle reset myModel.jsx");
+    setPatientName("");
+    setDate("");
+    setBloodGroup("");
+    setPatientAge("");
+    setRequiredUnits("");
     handleClose();
   };
 
   const handleSubmit = () => {
-    if (
-      !stationName ||
-      !location ||
-      !availablePorts ||
-      !totalPorts ||
-      !pricePerHour
-    ) {
-      return;
-    }
-    const userData = JSON.parse(localStorage.getItem("user-data")) || null;
-    if (userData?._id) {
-      const stationData = {
-        stationName,
-        location,
-        totalPorts,
-        availablePorts,
-        pricePerHour,
-        ownerId: userData._id,
-      };
-
-      console.log("stationData", stationData);
-      sendToServer(stationData);
-    } else {
-      console.log("Please Login first");
-    }
-  };
-  const sendToServer = (stationData) => {
-    try {
-      axios
-        .post(`${BASE_URL}/ev/create`, stationData)
-        .then((res) => {
-          console.log("res", res);
-          if (res.status === 201) {
-            getAllStations();
-            setShowAlert(true);
-            setToastColor("success");
-            setAlertMsg(res.data.message);
-          }
-        })
-        .catch((error) => {
-          console.log("Error on add new station", error);
-        })
-        .finally(() => {
-          handleClose();
-          handleReset();
-        });
-    } catch (error) {
-      console.log("Error on add new station", error);
-    }
+    console.log("handle submit mymodel.jsx");
   };
   return (
     <>
       <Modal show={showModel} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="model-heading">Add New Station</Modal.Title>
+          <Modal.Title className="model-heading">Requet Blood</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Control
-                value={stationName}
-                onChange={(e) => setStationName(e.target.value)}
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
                 type="text"
-                placeholder="Station Name"
+                placeholder="Patient Name"
                 autoFocus
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Control
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location"
+                type="number"
+                value={patientAge}
+                onChange={(e) => setPatientAge(e.target.value)}
+                placeholder="Patient Age"
                 rows={3}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control
-                value={totalPorts}
-                onChange={(e) => setTotalPorts(e.target.value)}
-                type="number"
-                placeholder="Total Ports"
+              <FormSelect
                 rows={3}
-              />
+                onChange={(e) => setBloodGroup(e.target.value)}
+                value={bloodGroup}
+              >
+                <option value="">Required Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </FormSelect>
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="number"
-                value={availablePorts}
-                onChange={(e) => setAvailablePorts(e.target.value)}
-                placeholder="Available Ports"
-                rows={3}
-              />
-            </Form.Group>
+
             <Form.Group
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Control
-                value={pricePerHour}
-                onChange={(e) => setPricePerHour(e.target.value)}
+                value={requiredUnits}
+                onChange={(e) => setRequiredUnits(e.target.value)}
                 type="number"
-                placeholder="Rate/hr"
+                placeholder="Required Units"
                 rows={3}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Control
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                placeholder="date"
+                rows={3}
+                type="date"
               />
             </Form.Group>
           </Form>
@@ -156,6 +119,6 @@ MyModel.propTypes = {
   setAlertMsg: PropTypes.func,
   setShowAlert: PropTypes.func,
   setToastColor: PropTypes.func,
-  getAllStations: PropTypes.func,
+  getAllDonors: PropTypes.func,
 };
 export default MyModel;

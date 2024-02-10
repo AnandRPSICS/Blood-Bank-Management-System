@@ -3,61 +3,33 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import "./stationTable.css";
 
-const StationTable = ({ allStations, deleteStation, bookSlot, role }) => {
-  const navigate = useNavigate();
-  const handleBookslot = (id) => {
-    navigate("/book-slot/" + id);
-  };
-
+const StationTable = ({ allDonors, deleteStation, bookSlot, role }) => {
   return (
     <div className="ev-table-container">
       <Table className="" striped bordered hover>
         <thead>
           <tr>
             <th>No.</th>
-            <th>Station Name</th>
-            <th>Location</th>
-            <th>Total Ports</th>
-            <th>Rate/hr</th>
-            {role !== "ev-station" && <th>Book Slots</th>}
+            <th>Donor Name</th>
+            <th>Blood Group</th>
+            <th>Phone Number</th>
+            <th>Email Id </th>
 
-            {role !== "user" && <th> Delete Station</th>}
+            {/* change this based on the donor and recepient  */}
+            {/* {role !== "ev-station" && <th>Book Slots</th>}
+
+            {role !== "user" && <th> Delete Station</th>} */}
           </tr>
         </thead>
         <tbody>
-          {allStations.map((elem, index) => {
+          {allDonors?.map((elem, index) => {
             return (
               <tr key={elem._id}>
                 <td>{index + 1}</td>
-                <td>{elem.stationName}</td>
-                <td>{elem.location}</td>
-                <td>{elem.totalPorts}</td>
-                <td>{elem.pricePerHour}</td>
-                {role !== "ev-station" && (
-                  <td>
-                    <button
-                      onClick={() => {
-                        handleBookslot(elem._id);
-                      }}
-                      className="book-slot-btn"
-                    >
-                      Book Slots
-                    </button>
-                  </td>
-                )}
-
-                {role !== "user" && (
-                  <td>
-                    <button
-                      onClick={() => {
-                        deleteStation(elem._id);
-                      }}
-                      className="delete-station-btn"
-                    >
-                      Delete Station
-                    </button>
-                  </td>
-                )}
+                <td>{elem.name}</td>
+                <td>{elem.bloodGroup}</td>
+                <td>{elem.phoneNumber}</td>
+                <td>{elem.email}</td>
               </tr>
             );
           })}
@@ -68,7 +40,7 @@ const StationTable = ({ allStations, deleteStation, bookSlot, role }) => {
 };
 
 StationTable.propTypes = {
-  allStations: PropTypes.array,
+  allDonors: PropTypes.array,
   deleteStation: PropTypes.func,
   bookSlot: PropTypes.func,
   role: PropTypes.string,
