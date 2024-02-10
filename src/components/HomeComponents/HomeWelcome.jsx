@@ -4,44 +4,30 @@ import { InputGroup, Form } from "react-bootstrap";
 import { FaLocationDot } from "react-icons/fa6";
 import { useMediaQuery } from "react-responsive";
 import "./styles/homeComponent.css";
-
+import bloodDonImg from "../../assets/group-don-bg.png";
 const HomeWelcome = () => {
   // const [textContent, setText]
   const isTab = useMediaQuery({
     query: "(max-width: 768px)",
   });
 
-
   return (
-    <div className="home-welcome-container">
+    <div className="home-welcome-container ms-0 ps-3">
       <Container className="home-welcome-left-container">
         <div>
           <h1>
-            Power up Your Electric <br/> Vehicle with Our Convenient <br/> {" "}
-            <span className="charging-word">Charging</span> Solutions
+            Be a <span className="charging-word"> Hero</span> in Someone's
+            story. <br /> Donate Blood Today and make a <br />{" "}
+            <span className="charging-word">Life-changing</span> Difference
           </h1>
           <p>
-            Fast, Reliable, and Eco-friendly Charging for Your Electric Vehicle.
+            {" "}
+            <i>The gift of blood: a simple gesture, an immense impact. </i>
           </p>
-        </div>
-        <div className="home-search-container">
-          <InputGroup>
-            <InputGroup.Text>
-              <FaLocationDot />
-            </InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="Search Nearby Charging Point."
-            />
-          </InputGroup>
-          <button>Search</button>
         </div>
       </Container>
       <Container className="home-welcome-img-div">
-        <Image
-          src="https://static.wixstatic.com/media/ff73f8_81895a0a8ea44ef6ac6453c066115b29~mv2.jpg/v1/fill/w_1101,h_771,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/ff73f8_81895a0a8ea44ef6ac6453c066115b29~mv2.jpg"
-          alt="img"
-        />
+        <Image src={bloodDonImg} alt="Blood donating" />
       </Container>
     </div>
   );

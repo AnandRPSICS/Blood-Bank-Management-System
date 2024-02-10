@@ -3,29 +3,30 @@ import { FaSearchLocation } from "react-icons/fa";
 import { FaChargingStation } from "react-icons/fa";
 import PropTypes from "prop-types";
 import "./styles/explanationBox.css";
-
+import { BiDonateBlood } from "react-icons/bi";
+import { MdBloodtype } from "react-icons/md";
+import { FaHandshake } from "react-icons/fa";
 const ExplanationBox = ({ boxNo }) => {
   const iconStyles = {
     fontSize: "40px",
-    color: "#2ddf3c",
+    color: "#e11b22",
   };
   const box1 = {
-    icon: <FaSearchLocation style={iconStyles} />,
-    heading: "Search for the station name",
+    icon: <MdBloodtype style={iconStyles} />,
+    heading: "Register as a Donor",
     description:
-      "Type and search for the station name as you wish in the search input easily and quickly",
+      "Register as a donor and view requests from patients in need of blood",
   };
   const box2 = {
-    icon: <FaChargingStation style={iconStyles} />,
-    heading: "Find the nearest location point",
+    icon: <FaHandshake style={iconStyles} />,
+    heading: "Are you a patient? need blood",
     description:
-      "Find the closest location point around you on map, make sure the station name is correct.",
+      "Register as a receipient and request for blood donors will accept your request",
   };
   const box3 = {
-    icon: <FaSearchLocation style={iconStyles} />,
-    heading: "Follow the path on the map",
-    description:
-      "You will get information that station is still empty or not before leaving for your destination",
+    icon: <BiDonateBlood style={iconStyles} />,
+    heading: "View all donors list",
+    description: "View all donors list and search or filter by blood group",
   };
 
   let activeBox = box1;

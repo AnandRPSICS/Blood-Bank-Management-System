@@ -11,7 +11,7 @@ import { useContext } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
 import { CgProfile } from "react-icons/cg";
-import {FcBusinessman} from "react-icons/fc";
+import { FcBusinessman } from "react-icons/fc";
 import "./navbar.css";
 
 const NavbarComponent = () => {
@@ -66,7 +66,7 @@ const NavbarComponent = () => {
           <Navbar.Brand className="navbar-brand-logo" onClick={redirectHome}>
             <Image
               className="logo"
-              src="https://pbs.twimg.com/media/F7_vgQqWcAAEr-p?format=jpg&name=small"
+              src="https://miro.medium.com/v2/da:true/resize:fit:700/1*KJACFKJ0GKtnhgR7OmlPFA.gif"
               alt="logo"
             />
           </Navbar.Brand>

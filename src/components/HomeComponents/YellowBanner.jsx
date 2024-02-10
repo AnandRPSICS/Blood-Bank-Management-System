@@ -1,6 +1,8 @@
 import { BsFillCarFrontFill } from "react-icons/bs";
 import { MdElectricCar } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
+import { BiDonateBlood } from "react-icons/bi";
+import { MdBloodtype } from "react-icons/md";
 import "./styles/yellowBanner.css";
 const YellowBanner = () => {
   const isTab = useMediaQuery({
@@ -8,16 +10,16 @@ const YellowBanner = () => {
   });
   return (
     <div className="yellow-banner banner-animation">
-      <div>500+ Users activated</div>
-      <BsFillCarFrontFill />
-      <div>1000+ EVs registered</div>
+      <div>100+ New Monthly Donors</div>
+      <BiDonateBlood />
+      <div>Save 1000+ lifes</div>
       {!isTab && (
         <>
-          <MdElectricCar />
-          <div>250+ Charging stations</div>
-          <BsFillCarFrontFill />
-          <div>1500 Charging completed</div>
-          <MdElectricCar />
+          <MdBloodtype />
+          <div>100+ New Monthly Donors</div>
+          <BiDonateBlood />
+          <div>Save 1000+ lifes</div>
+          <MdBloodtype />
         </>
       )}
     </div>

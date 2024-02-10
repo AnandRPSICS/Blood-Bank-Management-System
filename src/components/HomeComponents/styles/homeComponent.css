@@ -3,7 +3,6 @@
   margin: 20px;
   margin-top: 57px;
   background-color: #e0f1f8;
-  /* background-color: hsl(21, 94%, 39%); */
   height: 500px;
   width: 100%;
   display: flex;
@@ -17,7 +16,7 @@
 
 .home-welcome-left-container > div {
   position: relative;
-  top: 100px;
+  top: 150px;
 }
 .home-welcome-left-container > div h1 {
   color: black;
@@ -27,7 +26,7 @@
 }
 
 .charging-word {
-  color: #1c8029;
+  color: #e11b22;
 }
 
 .home-search-container {
@@ -44,8 +43,9 @@
   box-shadow: 3px 3px 2px;
 }
 .home-search-container button {
-  background-color: #ebce35;
-  border: 1px solid black;
+  background-color: #e11b22;
+  border: none;
+  color: white;
   height: 35px;
   box-shadow: 3px 3px 2px;
   width: 63px;
@@ -85,7 +85,7 @@
   .home-welcome-img-div img {
     width: 94%;
     height: 286px;
-}
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -112,5 +112,4 @@
 }
 
 @media screen and (max-width: 600px) {
-  
 }
