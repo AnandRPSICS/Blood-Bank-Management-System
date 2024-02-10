@@ -8,6 +8,8 @@ import { UserContext } from "../../../context/userContext.jsx";
 import "./displayStations.css";
 const Displaystations = () => {
   const { getAllUsers } = useContext(UserContext);
+  // this use for search & filter purpose
+  const [alwaysDonors, setAlwaysDonors] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [allDonors, setallDonors] = useState([]);
   const [searchStation, setSearchStation] = useState("");
@@ -31,6 +33,7 @@ const Displaystations = () => {
   const getAllDonors = () => {
     const allDonors = allUsers?.filter((user) => user.role === "donor") || [];
     setallDonors(allDonors);
+    setAlwaysDonors(allDonors);
   };
 
   const deleteDonor = () => {
@@ -50,6 +53,11 @@ const Displaystations = () => {
       getAllDonors();
       return;
     }
+
+    const filteredStations = alwaysDonors.filter((donor) =>
+      donor?.name?.toLowerCase().includes(searchStation?.toLowerCase())
+    );
+    setallDonors(filteredStations);
   };
 
   const requestBlood = () => {
@@ -58,8 +66,17 @@ const Displaystations = () => {
     setShowModel(true);
   };
 
-  const filterByBloodGroup = () => {
-    console.log("filter by blood group");
+  const filterByBloodGroup = (e) => {
+    const bloodGroup = e.target.value;
+    if (bloodGroup === "") {
+      setallDonors(alwaysDonors);
+      return;
+    }
+    const filterByBloodGroup = alwaysDonors.filter(
+      (donor) => donor.bloodGroup === bloodGroup
+    );
+    setallDonors(filterByBloodGroup);
+    console.log("filter by blood group", bloodGroup);
   };
 
   return (
@@ -90,7 +107,6 @@ const Displaystations = () => {
               <Form.Control
                 placeholder="Search Donors"
                 aria-label="Search Donors"
-                aria-describedby="basic-addon1"
                 value={searchStation}
                 onChange={(e) => setSearchStation(e.target.value)}
                 onKeyDown={handleKeyDown}

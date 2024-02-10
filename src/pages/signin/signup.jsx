@@ -83,7 +83,15 @@ const Signup = () => {
       setAlertMsg("Password must be at least 6 characters long.");
       return;
     }
-    if (name && role && email && bloodGroup && phoneNumber && password) {
+    const formValidated = form.checkValidity();
+    if (!formValidated) {
+      setShowAlert(true);
+      setAlertMsg("Please fill all the fields");
+      setToastColor("danger");
+      return;
+    }
+    
+    if (name && role && email && bloodGroup && phoneNumber && password ) {
       if (isMailUnique(email)) {
         sendToServer();
       } else {
