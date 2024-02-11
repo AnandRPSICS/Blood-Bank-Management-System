@@ -1,9 +1,29 @@
 import Table from "react-bootstrap/Table";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 import "./stationTable.css";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/userContext.jsx";
+const RequestTable = ({
+  allRequests,
+  reqAcceptingTrack,
+  setReqAcceptingTrack,
+}) => {
+  const { getRequestAccepted, getActiveUser } = useContext(UserContext);
 
-const RequestTable = ({ allRequests, deleteStation, bookSlot, role }) => {
+  const [role, setrole] = useState("");
+
+  useEffect(() => {
+    const preUserData = getActiveUser();
+    if (preUserData) {
+      setrole(preUserData.role);
+    }
+  }, []);
+  const handleAccept = (reqId) => {
+    getRequestAccepted(reqId);
+
+    setReqAcceptingTrack(!reqAcceptingTrack);
+  };
+
   return (
     <div className="ev-table-container">
       <Table className="" striped bordered hover>
@@ -16,7 +36,8 @@ const RequestTable = ({ allRequests, deleteStation, bookSlot, role }) => {
             <th>Required Units</th>
             <th>Phone Number</th>
             <th>Date </th>
-            <th>Accept Request</th>
+
+            {role === "donor" && <th>Accept Request</th>}
 
             {/* change this based on the donor and recepient  */}
             {/* {role !== "ev-station" && <th>Book Slots</th>}
@@ -26,7 +47,7 @@ const RequestTable = ({ allRequests, deleteStation, bookSlot, role }) => {
         </thead>
         <tbody>
           {allRequests?.map((elem, index) => {
-            console.log("el", elem);
+            console.log("elem", elem);
             return (
               <tr key={elem?.reqId}>
                 <td>{index + 1}</td>
@@ -36,11 +57,24 @@ const RequestTable = ({ allRequests, deleteStation, bookSlot, role }) => {
                 <td>{elem?.requiredUnits}</td>
                 <td>{elem?.phoneNumber}</td>
                 <td>{elem?.date}</td>
-                <td>
-                  <button type="btn" className="btn btn-success">
-                    Accept
-                  </button>
-                </td>
+
+                {role === "donor" && (
+                  <td>
+                    {elem?.isReqAccepted ? (
+                      <p className="text-success"> Accepted </p>
+                    ) : (
+                      <button
+                        type="btn"
+                        className="btn btn-success"
+                        onClick={() => {
+                          handleAccept(elem?.reqId);
+                        }}
+                      >
+                        Accept
+                      </button>
+                    )}
+                  </td>
+                )}
               </tr>
             );
           })}

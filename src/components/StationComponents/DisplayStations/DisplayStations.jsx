@@ -7,7 +7,7 @@ import MyModel from "./MyModel.jsx";
 import { UserContext } from "../../../context/userContext.jsx";
 import "./displayStations.css";
 const Displaystations = () => {
-  const { getAllUsers } = useContext(UserContext);
+  const { getAllUsers, getActiveUser } = useContext(UserContext);
   // alwaysDonoors use for search & filter purpose
   const [alwaysDonors, setAlwaysDonors] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -17,10 +17,13 @@ const Displaystations = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [toastColor, setToastColor] = useState("dark");
   const [showModel, setShowModel] = useState(false);
-  const [role, setRole] = useState("donor");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const data = getAllUsers();
+    const currUser = getActiveUser();
+    setRole(currUser?.role);
+    console.log("aaa", currUser);
     setAllUsers(data);
   }, []);
 
@@ -85,7 +88,7 @@ const Displaystations = () => {
           <div className="table-heading-container">
             <h1>List of Donors</h1>
             {/* change this to request blood  */}
-            {role !== "user" && (
+            {role !== "donor" && (
               <button onClick={requestBlood}>Request Blood </button>
             )}
           </div>

@@ -45,13 +45,13 @@ const UserProvider = ({ children }) => {
 
   const getActiveUser = () => {
     const userData = localStorage.getItem("bbms-active-user") || null;
-    function setActiveUserFun () {
+    function setActiveUserFun() {
       setActiveUser(JSON.parse(userData));
       setIsUserLoggedIn(true);
     }
-    
+
     if (userData) {
-      setActiveUserFun()
+      setActiveUserFun();
       return JSON.parse(userData);
     }
     return userData;
@@ -79,7 +79,6 @@ const UserProvider = ({ children }) => {
 
   // requests
 
-
   const getAllReq = () => {
     const allReq = localStorage.getItem("bbms-all-req") || null;
     if (allReq) {
@@ -92,16 +91,31 @@ const UserProvider = ({ children }) => {
 
   const addNewReq = (newReq) => {
     const existingReq = getAllReq();
+
     const newArr = [...existingReq, newReq];
     localStorage.setItem("bbms-all-req", JSON.stringify(newArr));
     setAllReqArr([...allReqArr, newReq]);
   };
 
+  const getRequestAccepted = (reqId) => {
+    const existingReq = getAllReq();
+    const req = existingReq.find((req) => req.reqId == reqId);
+    const newArr = existingReq.filter((req) => req.reqId !== reqId);
+    req.isReqAccepted = true;
+    const updatedArr = [...newArr, req];
+
+    localStorage.setItem("bbms-all-req", JSON.stringify(updatedArr));
+    setAllReqArr(updatedArr);
+
+    // localStorage.setItem("bbms-all-req", JSON.stringify(newArr));
+    // setAllReqArr(newArr);
+  };
+
   useEffect(() => {
     getAllUsers();
     getActiveUser();
-    getAllReq()
-  }, [])
+    getAllReq();
+  }, []);
   return (
     <UserContext.Provider
       value={{
@@ -109,6 +123,7 @@ const UserProvider = ({ children }) => {
         allUsers,
         isUserLoggedIn,
         allReqArr,
+        getRequestAccepted,
         newRegistration,
         login,
         logout,
@@ -116,7 +131,7 @@ const UserProvider = ({ children }) => {
         getActiveUser,
         isMailUnique,
         getAllReq,
-        addNewReq
+        addNewReq,
       }}
     >
       {children}

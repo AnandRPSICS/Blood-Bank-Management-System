@@ -21,7 +21,7 @@ const MyModel = ({
   const [requiredUnits, setRequiredUnits] = useState("");
   const [date, setDate] = useState("");
 
-  const {addNewReq} = useContext(UserContext)
+  const { addNewReq } = useContext(UserContext);
 
   const handleClose = () => setShowModel(false);
   const handleReset = () => {
@@ -56,8 +56,6 @@ const MyModel = ({
   };
 
   const sendData = () => {
-    console.log("handle add station");
-
     const reqObj = {
       name: patientName,
       phoneNumber,
@@ -69,7 +67,13 @@ const MyModel = ({
     };
 
     addNewReq(reqObj);
-    console.log("req obj", reqObj);
+
+    setShowAlert(true);
+    setAlertMsg("Request Successfully Added.");
+    setToastColor("success");
+    setTimeout(() => {
+      handleReset();
+    }, 1500);
     // make this blood request
   };
   return (

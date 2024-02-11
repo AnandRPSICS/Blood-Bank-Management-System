@@ -10,7 +10,6 @@ const DisplayReq = () => {
   const { getAllReq, getActiveUser, allReqArr, activeUser } =
     useContext(UserContext);
 
-  const [presentUser, setPresentUser] = useState(null);
   const [allRequests, setAllRequests] = useState([]);
   const [sameBloodGroupReqs, setSameBloodGroupReqs] = useState([]);
   const [searchStation, setSearchStation] = useState("");
@@ -19,6 +18,7 @@ const DisplayReq = () => {
   const [toastColor, setToastColor] = useState("dark");
   const [showModel, setShowModel] = useState(false);
   const [role, setRole] = useState("");
+  const [reqAcceptingTrack, setReqAcceptingTrack] = useState(false);
 
   useEffect(() => {
     const data = getAllReq();
@@ -31,15 +31,12 @@ const DisplayReq = () => {
     } else {
       console.log("Login Again.");
     }
-  }, []);
+  }, [reqAcceptingTrack]);
 
   const filterReqByActiveUserBloodGroup = (actUser, allBloodReq) => {
-
     const sameGroup = allBloodReq.filter((req) => {
-      console.log("bbgroup", req.bloodGroup, "ac us bg", actUser.bloodGroup);
       return req.bloodGroup == actUser.bloodGroup;
     });
-    console.log("same", sameGroup);
     setSameBloodGroupReqs(sameGroup);
   };
   const getAllDonors = () => {
@@ -52,16 +49,6 @@ const DisplayReq = () => {
   };
   const bookSlot = () => {
     console.log("inside book slot");
-  };
-
-  const requestBlood = () => {
-    console.log("handle add station");
-    // make this blood request
-    setShowModel(true);
-  };
-
-  const filterByBloodGroup = () => {
-    console.log("filter by blood group");
   };
 
   return (
@@ -85,6 +72,8 @@ const DisplayReq = () => {
               deleteStation={deleteDonor}
               bookSlot={bookSlot}
               role={role}
+              reqAcceptingTrack={reqAcceptingTrack}
+              setReqAcceptingTrack={setReqAcceptingTrack}
             />
           )}
           <ToastContainer position="top-center">

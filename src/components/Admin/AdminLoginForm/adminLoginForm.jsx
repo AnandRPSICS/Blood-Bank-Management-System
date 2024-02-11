@@ -8,9 +8,11 @@ const AdminLoginForm = () => {
   const email = "admin@gmail.com";
   const password = "admin@123";
   const navigate = useNavigate();
-  const [inputEmail, setInputEmail] = useState("admin@gmail.com");
-  const [inputPassword, setInputPassword] = useState("admin@123");
-
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+  useEffect(() => {
+    console.log("admin@gmail.com, admin@123");
+  }, []);
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     event.preventDefault();
