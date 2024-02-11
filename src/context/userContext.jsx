@@ -1,5 +1,5 @@
 // UserContext.js
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
@@ -45,9 +45,14 @@ const UserProvider = ({ children }) => {
 
   const getActiveUser = () => {
     const userData = localStorage.getItem("bbms-active-user") || null;
-    if (userData) {
+    function setActiveUserFun () {
       setActiveUser(JSON.parse(userData));
       setIsUserLoggedIn(true);
+    }
+    
+    if (userData) {
+      setActiveUserFun()
+      return JSON.parse(userData);
     }
     return userData;
   };
@@ -92,6 +97,11 @@ const UserProvider = ({ children }) => {
     setAllReqArr([...allReqArr, newReq]);
   };
 
+  useEffect(() => {
+    getAllUsers();
+    getActiveUser();
+    getAllReq()
+  }, [])
   return (
     <UserContext.Provider
       value={{

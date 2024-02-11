@@ -10,6 +10,7 @@ const DisplayReq = () => {
   const { getAllReq, getActiveUser, allReqArr, activeUser } =
     useContext(UserContext);
 
+  const [presentUser, setPresentUser] = useState(null);
   const [allRequests, setAllRequests] = useState([]);
   const [sameBloodGroupReqs, setSameBloodGroupReqs] = useState([]);
   const [searchStation, setSearchStation] = useState("");
@@ -22,21 +23,24 @@ const DisplayReq = () => {
   useEffect(() => {
     const data = getAllReq();
     // call getActiveUser for store data to context api from LS.
-    getActiveUser();
+    const preUserData = getActiveUser();
+    const allBloodReq = getAllReq();
     setAllRequests(data);
-    if (activeUser) {
-      filterReqByActiveUserBloodGroup();
+    if (preUserData) {
+      filterReqByActiveUserBloodGroup(preUserData, allBloodReq);
     } else {
       console.log("Login Again.");
     }
   }, []);
 
-  const filterReqByActiveUserBloodGroup = () => {
-    const sameBloodGroupReqs = allReqArr.filter(
-      (req) => req.bloodGroup === activeUser.bloodGroup
-    );
-    console.log("same", sameBloodGroupReqs);
-    setSameBloodGroupReqs(sameBloodGroupReqs);
+  const filterReqByActiveUserBloodGroup = (actUser, allBloodReq) => {
+
+    const sameGroup = allBloodReq.filter((req) => {
+      console.log("bbgroup", req.bloodGroup, "ac us bg", actUser.bloodGroup);
+      return req.bloodGroup == actUser.bloodGroup;
+    });
+    console.log("same", sameGroup);
+    setSameBloodGroupReqs(sameGroup);
   };
   const getAllDonors = () => {
     const data = getAllReq();
