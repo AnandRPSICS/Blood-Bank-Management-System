@@ -43,10 +43,20 @@ const NavbarComponent = () => {
 
   // redirect donors only user log in.
   const redirectDonors = () => {
+    const activeUser = getActiveUser();
+    if (!activeUser) {
+      setShowAlert(true);
+      return;
+    }
     navigate("/donors");
   };
 
   const redirectRequests = () => {
+    const activeUser = getActiveUser();
+    if (!activeUser) {
+      setShowAlert(true);
+      return;
+    }
     navigate("/requests");
   };
 
@@ -109,14 +119,14 @@ const NavbarComponent = () => {
           </>
         </Nav>
       </Navbar>
-      <ToastContainer position="top-center">
+      <ToastContainer style={{ color: "white" }} position="top-center">
         <Toast
           className="toast-msg"
           bg="primary"
           onClose={() => setShowAlert(false)}
           show={showAlert}
           animation={true}
-          delay={2000}
+          delay={1500}
           autohide
         >
           <Toast.Body>Login First.</Toast.Body>
