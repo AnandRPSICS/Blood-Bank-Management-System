@@ -1,13 +1,18 @@
 import { useState, Fragment, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../../../components/Admin/AdminSidebar/AdminSidebar";
 import "./adminDashboard.css";
+import ReqTable from "./reqTable";
+import UserTable from "./userTable";
 
 const AdminDashboard = () => {
   const [activePage, setActivePage] = useState("users");
   const changeActivePage = (page) => {
     setActivePage(page);
   };
+
+  useEffect(() => {
+    console.log(activePage);
+  }, [activePage]);
 
   return (
     <>
@@ -16,11 +21,18 @@ const AdminDashboard = () => {
           activePage={activePage}
           changeActivePage={changeActivePage}
         />
-
-      <h1>Admin dashboard </h1>
-
-
-        
+        {activePage === "users" && (
+          <div className="admin-main-view pt-5">
+            <h3 className="text-center "> All Users </h3>
+            <UserTable />
+          </div>
+        )}
+        {activePage !== "users" && (
+          <div className="admin-main-view pt-5">
+            <h3 className="text-center "> All Requests </h3>
+            <ReqTable />
+          </div>
+        )}
       </div>
     </>
   );

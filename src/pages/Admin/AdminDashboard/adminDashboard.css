@@ -6,3 +6,9 @@
   width: 82%;
   margin-left: 18%;
 }
+
+.admin-main-view {
+  width: 82%;
+  min-height: 600px;
+  margin-left: auto;
+}

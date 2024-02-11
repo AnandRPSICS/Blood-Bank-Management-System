@@ -77,6 +77,13 @@ const UserProvider = ({ children }) => {
     return !isMailExist;
   };
 
+  const removeUser = (userId) => {
+    const allUsers = getAllUsers();
+    const newArr = allUsers.filter((user) => user.userId !== userId);
+    localStorage.setItem("bbms-all-users", JSON.stringify(newArr));
+    setAllUsers(newArr);
+  }
+
   // requests
 
   const getAllReq = () => {
@@ -111,6 +118,8 @@ const UserProvider = ({ children }) => {
     // setAllReqArr(newArr);
   };
 
+
+
   useEffect(() => {
     getAllUsers();
     getActiveUser();
@@ -132,6 +141,7 @@ const UserProvider = ({ children }) => {
         isMailUnique,
         getAllReq,
         addNewReq,
+        removeUser
       }}
     >
       {children}
